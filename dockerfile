@@ -17,12 +17,12 @@ RUN pip install git+https://github.com/openai/whisper.git
 # Clean any previous (possibly corrupted) model cache
 RUN rm -rf /root/.cache/whisper
 
-# Pre-download the 'small' model to avoid runtime download/corruption
-RUN whisper --model small --help || true
+# # Pre-download the 'small' model to avoid runtime download/corruption
+# RUN whisper --model small --help || true
 
 # (Optional) Expose a port if you plan to run an API server
 EXPOSE 5001
 
 # Default command: run whisper CLI (change as needed)
 COPY api_server.py /app/api_server.py
-ENTRYPOINT ["python", "api_server.py"]
+ENTRYPOINT ["python", "-u", "api_server.py"]

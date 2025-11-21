@@ -8,6 +8,9 @@ PORT = 5001
 UPLOAD_DIR = "/app/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+model = os.getenv("MODEL", "small")
+language = os.getenv("LANGUAGE", "en")
+
 class WhisperHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path != "/transcribe":
@@ -42,7 +45,8 @@ class WhisperHandler(http.server.SimpleHTTPRequestHandler):
                 result = subprocess.run(
                     [
                         "whisper", filepath,
-                        "--model", "small",
+                        "--model", model,
+                        "--language", language,
                         "--output_format", "json",
                         "--output_dir", UPLOAD_DIR
                     ],
@@ -84,4 +88,6 @@ class WhisperHandler(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     with socketserver.TCPServer(("", PORT), WhisperHandler) as httpd:
         print(f"Serving on port {PORT}")
+        print(f"Model: {model}")
+        print(f"Language: {language}")
         httpd.serve_forever()

@@ -25,13 +25,13 @@ cd local-whisper
 ### 2. Build the Docker image
 
 ```sh
-docker build -t whisper-api .
+docker compose build
 ```
 
 ### 3. Run the Docker container
 
 ```sh
-docker run -p 5001:5001 whisper-api
+docker compose up -d
 ```
 
 - The API will be available at [http://localhost:5001/transcribe](http://localhost:5001/transcribe)

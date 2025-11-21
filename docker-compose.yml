@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  whisper-api:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "5001:5001"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - MODEL=large-v3
+      - LANGUAGE=pl
+    volumes:
+      - ./models:/root/.cache/whisper
+      - ./uploads:/app/uploads
+    restart: unless-stopped
