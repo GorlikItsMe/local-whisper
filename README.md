@@ -77,7 +77,8 @@ You will receive a JSON object with the transcription and segment timings.
 ## Notes
 
 - This API is for local or trusted use only. The multipart parser is minimal and not hardened for public internet exposure.
-- The default model is `small`. You can change this in `api_server.py` if you want to use a different Whisper model.
+- The default model is `small`. You can change this in `docker-compose.yml` using `MODEL` environment variable if you want to use a different Whisper model.
+- The default language is `en`. You can change this in `docker-compose.yml` using `LANGUAGE` environment variable if you want to use a different language.
 
 ---
 

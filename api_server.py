@@ -85,7 +85,31 @@ class WhisperHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b"No file found in request")
 
+
+def pre_load_model():
+    """
+    # Pre-download the 'small' model to avoid runtime download/corruption
+    # RUN whisper --model small --help || true
+    """
+    print(f"Pre-loading model: {model}")
+    try:
+        result = subprocess.run(
+            ["whisper", "--model", model, "--help"],
+            capture_output=True, text=True
+        )
+        print(f"Model pre-loaded successfully")
+        print(result.stdout)
+        print(result.stderr)
+        return True
+    except Exception as e:
+        print(f"Failed to pre-load model: {e}")
+        return False
+
 if __name__ == "__main__":
+    if not pre_load_model():
+        print("Failed to pre-load model")
+        exit(1)
+
     with socketserver.TCPServer(("", PORT), WhisperHandler) as httpd:
         print(f"Serving on port {PORT}")
         print(f"Model: {model}")
