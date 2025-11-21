@@ -25,7 +25,11 @@ cd local-whisper
 ### 2. Build the Docker image
 
 ```sh
-docker compose build
+# Build base image with only whisper
+docker build --target whisper-base -t whisper-base:latest .
+# use that image as base and create the final image with api
+docker build --target whisper-api -t whisper-api:latest .
+# docker compose build
 ```
 
 ### 3. Run the Docker container

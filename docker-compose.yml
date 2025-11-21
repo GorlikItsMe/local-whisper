@@ -2,9 +2,11 @@ version: '3.8'
 
 services:
   whisper-api:
+    # image: whisper-api:latest
     build:
       context: .
       dockerfile: dockerfile
+      target: whisper-api
     ports:
       - "5001:5001"
 

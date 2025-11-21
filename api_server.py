@@ -87,14 +87,22 @@ class WhisperHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def pre_load_model():
-    """
-    # Pre-download the 'small' model to avoid runtime download/corruption
-    # RUN whisper --model small --help || true
-    """
+    # check if model is in /root/.cache/whisper folder
+    if os.path.exists(os.path.join("/root/.cache/whisper", f"{model}.pt")):
+        print(f"Model {model} found in /root/.cache/whisper folder")
+        return True
+
     print(f"Pre-loading model: {model}")
     try:
+        filepath = os.path.join("app", "your-audio-file.mp3")
         result = subprocess.run(
-            ["whisper", "--model", model, "--help"],
+            [
+                "whisper", filepath,
+                "--model", model,
+                "--language", language,
+                "--output_format", "json",
+                "--output_dir", UPLOAD_DIR
+            ],
             capture_output=True, text=True
         )
         print(f"Model pre-loaded successfully")
